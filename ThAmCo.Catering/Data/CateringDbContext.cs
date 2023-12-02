@@ -37,12 +37,27 @@ namespace ThAmCo.Catering.Data
             modelBuilder.Entity<MenuFoodItem>()
                 .HasKey(mf => new { mf.MenuId, mf.FoodItemId});     // composite keys
 
-            // relationship for Food entity
-            modelBuilder.Entity<FoodItem>()
-                .HasMany(f => f.MenuFoodItems)
-                .WithOne(mf => mf.FoodItem)             // define Many-One MenuFood-Food
-                .HasForeignKey(fi => fi.FoodItemId)     // foreign key
-                .OnDelete(DeleteBehavior.Restrict);     // OnDelete prevents Food being deleted
+            modelBuilder.Entity<MenuFoodItem>()
+                .HasOne(mf => mf.FoodItem)
+                .WithMany(mf => mf.Menus)
+                .HasForeignKey(mf => mf.FoodItemId);
+
+            modelBuilder.Entity<MenuFoodItem>()
+                .HasOne(mf => mf.FoodItem)
+                .WithMany(mf => mf.Menus)
+                .HasForeignKey(mf => mf.FoodItemId);
+
+            modelBuilder.Entity<MenuFoodItem>()
+                .HasOne(cf => cf.Menu)
+                .WithMany(cf => cf.Foods)
+                .HasForeignKey(cf => cf.MenuId);
+
+
+            //// relationship for Food entity
+            //modelBuilder.Entity<FoodItem>()
+            //    .HasMany(f => f.MenuFoodItems)
+            //    .WithOne(mf => mf.FoodItem)             // define Many-One MenuFood-Food
+            //    .HasForeignKey(fi => fi.FoodItemId);     // foreign key
 
             // relationship for Menu entity
             modelBuilder.Entity<Menu>()
