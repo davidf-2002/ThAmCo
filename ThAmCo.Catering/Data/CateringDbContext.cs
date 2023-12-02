@@ -56,17 +56,23 @@ namespace ThAmCo.Catering.Data
 
             modelBuilder.Entity<FoodItem>().HasData(
                 new FoodItem ( 1, "Salmon", 10.00 ),
-                new FoodItem ( 2, "Chicken", 11.00)
+                new FoodItem ( 2, "Chicken", 11.00),
+                new FoodItem(3, "Beef", 10.00),
+                new FoodItem(4, "Turkey", 11.00)
             );
 
             modelBuilder.Entity<Menu>().HasData(
                 new Menu ( 1, "Menu1"),
-                new Menu ( 2, "Menu2")
+                new Menu ( 2, "Menu2"),
+                new Menu(3, "Menu3"),
+                new Menu(4, "Menu4")
             );
 
             modelBuilder.Entity<FoodBooking>().HasData(
                 new FoodBooking ( 1, 1, 1, 1 ),
-                new FoodBooking ( 2, 2, 2, 2 )
+                new FoodBooking ( 2, 2, 2, 2 ),
+                new FoodBooking(3, 3, 3, 3),
+                new FoodBooking(4, 4, 4, 4)
             );
         }
 
