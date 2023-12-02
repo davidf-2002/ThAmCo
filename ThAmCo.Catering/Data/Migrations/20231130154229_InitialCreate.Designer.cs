@@ -10,7 +10,7 @@ using ThAmCo.Catering.Data;
 namespace ThAmCo.Catering.Data.Migrations
 {
     [DbContext(typeof(CateringDbContext))]
-    [Migration("20231111103101_InitialCreate")]
+    [Migration("20231130154229_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +20,7 @@ namespace ThAmCo.Catering.Data.Migrations
 
             modelBuilder.Entity("ThAmCo.Catering.Data.FoodBooking", b =>
                 {
-                    b.Property<int>("FoodBookingId")
+                    b.Property<int>("BookingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -33,11 +33,27 @@ namespace ThAmCo.Catering.Data.Migrations
                     b.Property<int>("NumberOfGuests")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("FoodBookingId");
+                    b.HasKey("BookingId");
 
                     b.HasIndex("MenuId");
 
-                    b.ToTable("FoodBookings");
+                    b.ToTable("FoodBooking");
+
+                    b.HasData(
+                        new
+                        {
+                            BookingId = 1,
+                            ClientReferenceId = 1,
+                            MenuId = 1,
+                            NumberOfGuests = 1
+                        },
+                        new
+                        {
+                            BookingId = 2,
+                            ClientReferenceId = 2,
+                            MenuId = 2,
+                            NumberOfGuests = 2
+                        });
                 });
 
             modelBuilder.Entity("ThAmCo.Catering.Data.FoodItem", b =>
@@ -46,15 +62,31 @@ namespace ThAmCo.Catering.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<float>("UnitPrice")
+                    b.Property<double>("Price")
                         .HasColumnType("REAL");
 
                     b.HasKey("FoodItemId");
 
-                    b.ToTable("FoodItems");
+                    b.ToTable("FoodItem");
+
+                    b.HasData(
+                        new
+                        {
+                            FoodItemId = 1,
+                            Name = "Salmon",
+                            Price = 10.0
+                        },
+                        new
+                        {
+                            FoodItemId = 2,
+                            Name = "Chicken",
+                            Price = 11.0
+                        });
                 });
 
             modelBuilder.Entity("ThAmCo.Catering.Data.Menu", b =>
@@ -63,12 +95,26 @@ namespace ThAmCo.Catering.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("MenuName")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.HasKey("MenuId");
 
-                    b.ToTable("Menus");
+                    b.ToTable("Menu");
+
+                    b.HasData(
+                        new
+                        {
+                            MenuId = 1,
+                            Name = "Menu1"
+                        },
+                        new
+                        {
+                            MenuId = 2,
+                            Name = "Menu2"
+                        });
                 });
 
             modelBuilder.Entity("ThAmCo.Catering.Data.MenuFoodItem", b =>
@@ -83,7 +129,7 @@ namespace ThAmCo.Catering.Data.Migrations
 
                     b.HasIndex("FoodItemId");
 
-                    b.ToTable("MenuFoodItems");
+                    b.ToTable("MenuFoodItem");
 
                     b.HasData(
                         new
@@ -101,7 +147,7 @@ namespace ThAmCo.Catering.Data.Migrations
             modelBuilder.Entity("ThAmCo.Catering.Data.FoodBooking", b =>
                 {
                     b.HasOne("ThAmCo.Catering.Data.Menu", "Menu")
-                        .WithMany("FoodBookings")
+                        .WithMany("FoodBooking")
                         .HasForeignKey("MenuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -112,13 +158,13 @@ namespace ThAmCo.Catering.Data.Migrations
             modelBuilder.Entity("ThAmCo.Catering.Data.MenuFoodItem", b =>
                 {
                     b.HasOne("ThAmCo.Catering.Data.FoodItem", "FoodItem")
-                        .WithMany("MenuFoodItems")
+                        .WithMany("MenuFoodItem")
                         .HasForeignKey("FoodItemId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ThAmCo.Catering.Data.Menu", "Menu")
-                        .WithMany("MenuFoodItems")
+                        .WithMany("MenuFoodItem")
                         .HasForeignKey("MenuId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -130,14 +176,14 @@ namespace ThAmCo.Catering.Data.Migrations
 
             modelBuilder.Entity("ThAmCo.Catering.Data.FoodItem", b =>
                 {
-                    b.Navigation("MenuFoodItems");
+                    b.Navigation("MenuFoodItem");
                 });
 
             modelBuilder.Entity("ThAmCo.Catering.Data.Menu", b =>
                 {
-                    b.Navigation("FoodBookings");
+                    b.Navigation("FoodBooking");
 
-                    b.Navigation("MenuFoodItems");
+                    b.Navigation("MenuFoodItem");
                 });
 #pragma warning restore 612, 618
         }

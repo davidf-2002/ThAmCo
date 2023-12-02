@@ -4,6 +4,13 @@ namespace ThAmCo.Catering.Data
 {
     public class FoodItem
     {
+        public FoodItem(int foodItemId, string name, double price)
+        {
+            FoodItemId = foodItemId;
+            Name = name;
+            Price = price;
+        }
+
         [Key]
         public int FoodItemId { get; set; }
 
@@ -12,6 +19,6 @@ namespace ThAmCo.Catering.Data
         public string Name { get; set;}
         public double Price { get; set;}
 
-        public List<MenuFoodItem> MenuFoodItems { get; set; }      // Establishing One-many relationship with MenuFood class
+        public List<MenuFoodItem> MenuFoodItem { get; set; }      // Establishing One-many relationship with MenuFood class
     }
 }

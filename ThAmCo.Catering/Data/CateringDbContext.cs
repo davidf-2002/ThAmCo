@@ -4,11 +4,11 @@ namespace ThAmCo.Catering.Data
 {
     public class CateringDbContext : DbContext
     {
-        // defining the database tables
-        public DbSet<FoodBooking> FoodBookings { get; set; }
-        public DbSet<Menu> Menus { get; set; }
-        public DbSet<FoodItem> FoodItems { get; set; }
-        public DbSet<MenuFoodItem> MenuFoodItems { get; set; }
+        // defining database properties
+        public DbSet<FoodBooking> FoodBooking { get; set; }
+        public DbSet<Menu> Menu { get; set; }
+        public DbSet<FoodItem> FoodItem { get; set; }
+        public DbSet<MenuFoodItem> MenuFoodItem { get; set; }
         private string DbPath { get; set; } = string.Empty;
 
 
@@ -33,60 +33,40 @@ namespace ThAmCo.Catering.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // relationship for MenuFood entity
-            modelBuilder.Entity<MenuFoodItem>()
-                .HasKey(mf => new { mf.MenuId, mf.FoodItemId});     // composite keys
-
-            modelBuilder.Entity<MenuFoodItem>()
-                .HasOne(mf => mf.FoodItem)
-                .WithMany(mf => mf.Menus)
-                .HasForeignKey(mf => mf.FoodItemId);
-
-            modelBuilder.Entity<MenuFoodItem>()
-                .HasOne(mf => mf.FoodItem)
-                .WithMany(mf => mf.Menus)
-                .HasForeignKey(mf => mf.FoodItemId);
-
-            modelBuilder.Entity<MenuFoodItem>()
-                .HasOne(cf => cf.Menu)
-                .WithMany(cf => cf.Foods)
-                .HasForeignKey(cf => cf.MenuId);
-
-
-            //// relationship for Food entity
-            //modelBuilder.Entity<FoodItem>()
-            //    .HasMany(f => f.MenuFoodItems)
-            //    .WithOne(mf => mf.FoodItem)             // define Many-One MenuFood-Food
-            //    .HasForeignKey(fi => fi.FoodItemId);     // foreign key
+            modelBuilder.Entity<MenuFoodItem>().HasKey(mf => new { mf.MenuId, mf.FoodItemId });     // composite keys
 
             // relationship for Menu entity
             modelBuilder.Entity<Menu>()
-                .HasMany(m => m.MenuFoodItems)
-                .WithOne(mf => mf.Menu)                 // define Many-One MenuFood-Menu
-                .HasForeignKey(mi => mi.MenuId)
+                .HasMany(m => m.MenuFoodItem)
+                .WithOne(ms => ms.Menu)                 // define Many-One MenuFoodItem-Menu
+                .HasForeignKey(ms => ms.MenuId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<FoodItem>()
+            .HasMany(m => m.MenuFoodItem)
+            .WithOne(ms => ms.FoodItem)                 // define Many-One MenuFoodItem-FoodItem
+            .HasForeignKey(ms => ms.FoodItemId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-
-            // seed data
+            //seed data
             modelBuilder.Entity<MenuFoodItem>().HasData(
-                new MenuFoodItem { MenuId = 1, FoodItemId = 1 },
-                new MenuFoodItem { MenuId = 2, FoodItemId = 2 }
+                new MenuFoodItem (1, 1 ),
+                new MenuFoodItem (2, 2)
             );
 
             modelBuilder.Entity<FoodItem>().HasData(
-                new FoodItem { FoodItemId = 1, Name = "Salmon", Price = 10.00 },
-                new FoodItem { FoodItemId = 2, Name = "Chicken", Price = 11.00}
+                new FoodItem ( 1, "Salmon", 10.00 ),
+                new FoodItem ( 2, "Chicken", 11.00)
             );
 
             modelBuilder.Entity<Menu>().HasData(
-                new Menu { MenuId = 1, Name = "Menu1"},
-                new Menu { MenuId = 2, Name = "Menu2"}
+                new Menu ( 1, "Menu1"),
+                new Menu ( 2, "Menu2")
             );
 
             modelBuilder.Entity<FoodBooking>().HasData(
-                new FoodBooking { BookingId = 1, ClientReferenceId = 1, NumberOfGuests = 1, MenuId = 1},
-                new FoodBooking { BookingId = 2, ClientReferenceId = 2, NumberOfGuests = 2, MenuId = 2 }
+                new FoodBooking ( 1, 1, 1, 1 ),
+                new FoodBooking ( 2, 2, 2, 2 )
             );
         }
 

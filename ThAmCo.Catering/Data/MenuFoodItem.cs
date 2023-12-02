@@ -5,6 +5,12 @@ namespace ThAmCo.Catering.Data
 {
     public class MenuFoodItem
     {
+        public MenuFoodItem(int foodItemId, int menuId)
+        {
+            FoodItemId = foodItemId;
+            MenuId = menuId;
+        }
+
         [Required]
         public int FoodItemId { get; set; }
         [Required]
