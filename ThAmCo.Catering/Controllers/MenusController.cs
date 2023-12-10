@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ThAmCo.Catering.Data;
+using ThAmCo.Catering.DTO;
 
 namespace ThAmCo.Catering.Controllers
 {
@@ -21,31 +22,58 @@ namespace ThAmCo.Catering.Controllers
         }
 
         // GET: api/Menus
+        /// <summary>
+        /// Get list of Menus
+        /// </summary>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Menu>>> GetMenu()
+        public async Task<ActionResult<List<MenuDTO>>> GetMenus()
         {
-            return await _context.Menu.ToListAsync();
+            if (_context.FoodItem == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            var menus = await _context.Menu.ToListAsync();
+            var menusDto = menus.Select(m => new MenuDTO
+            {
+                MenuId = m.MenuId,
+                Name = m.Name,
+            }).ToList();
+            return Ok(menusDto);
         }
 
         // GET: api/Menus/5
+        /// <summary>
+        /// Get specific Menu
+        /// </summary>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Menu>> GetMenu(int id)
+        public async Task<ActionResult<MenuDTO>> GetMenu(int id)
         {
+            if (_context.Menu == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             var menu = await _context.Menu.FindAsync(id);
-
+            var menuDTO = new MenuDTO
+            {
+                MenuId = menu.MenuId,
+                Name = menu.Name,
+            };
             if (menu == null)
             {
                 return NotFound();
             }
-
-            return menu;
+            return Ok(menuDTO);
         }
 
+
         // PUT: api/Menus/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Edit an existing Menu
+        /// </summary>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMenu(int id, Menu menu)
+        public async Task<IActionResult> PutMenu(int id, MenuDTO menuDto)
         {
+            var menu = new Menu(menuDto.MenuId, menuDto.Name);
             if (id != menu.MenuId)
             {
                 return BadRequest();
@@ -73,31 +101,62 @@ namespace ThAmCo.Catering.Controllers
         }
 
         // POST: api/Menus
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Create a Menu
+        /// </summary>
         [HttpPost]
-        public async Task<ActionResult<Menu>> PostMenu(Menu menu)
+        public async Task<ActionResult<MenuDTO>> PostMenu(MenuDTO menuDto)
         {
-            _context.Menu.Add(menu);
-            await _context.SaveChangesAsync();
+            if (_context.Menu == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+            var menu = new Menu(menuDto.MenuId, menuDto.Name);
+            var menuDTO = new MenuDTO
+            {
+                MenuId = menu.MenuId,
+                Name = menu.Name,
+            };
 
-            return CreatedAtAction("GetMenu", new { id = menu.MenuId }, menu);
+            try
+            {
+                _context.Menu.Add(menu);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return CreatedAtAction("PostMenu", new { id = menu.MenuId }, menu);
         }
 
         // DELETE: api/Menus/5
+        /// <summary>
+        /// Remove specific Menu
+        /// </summary>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMenu(int id)
+        public async Task<ActionResult<Menu>> DeleteMenu(int id)
         {
             var menu = await _context.Menu.FindAsync(id);
+
             if (menu == null)
             {
                 return NotFound();
             }
 
-            _context.Menu.Remove(menu);
-            await _context.SaveChangesAsync();
-
+            try
+            {
+                _context.Menu.Remove(menu);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             return NoContent();
         }
+
 
         private bool MenuExists(int id)
         {

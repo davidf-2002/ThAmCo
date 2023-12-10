@@ -1,3 +1,5 @@
+using FluentAssertions.Common;
+using System.Reflection;
 using ThAmCo.Catering.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,13 @@ builder.Services.AddSwaggerGen();
 
 // Register database context with the framework
 builder.Services.AddDbContext<CateringDbContext>();
+
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+        $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+});
 
 var app = builder.Build();
 

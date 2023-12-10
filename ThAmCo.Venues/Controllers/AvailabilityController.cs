@@ -24,7 +24,7 @@ namespace ThAmCo.Venues.Controllers
                                              [FromQuery, Required] DateTime endDate)
         {
             var avails = _context.Availabilities
-                                 .Where(a => a.Reservation == null
+                                 .Where(a => a.Reservation == null      // queries the database using entity framework to give available venues for a given event type and date range
                                              && a.Date >= beginDate.Date
                                              && a.Date <= endDate.Date)
                                  .Join(_context.Suitabilities.Where(s => s.EventTypeId == eventType),
