@@ -17,7 +17,7 @@ namespace ThAmCo.Catering.Data
         {
             var folder = Environment.SpecialFolder.MyDocuments;
             var path = Environment.GetFolderPath(folder);
-            DbPath = Path.Join(path, "thamco.catering.db");
+            DbPath = Path.Join(path, "Thamco.catering.db");
         }
 
 

@@ -169,35 +169,35 @@ namespace ThAmCo.Catering.Controllers
         //}
 
 
-        [HttpPost]
-        public async Task<ActionResult<FoodBooking>> PostFoodBooking(FoodBooking booking)
-        {
-            if (booking == null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+        //[HttpPost]
+        //public async Task<ActionResult<FoodBooking>> PostFoodBooking(FoodBooking booking)
+        //{
+        //    if (booking == null)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError);
+        //    }
 
 
-            FoodBooking newBooking = new FoodBooking
-            {
-                ClientReferenceId = booking.ClientReferenceId,
-                BookingId = booking.BookingId,
-                MenuId = booking.MenuId,
-                NumberOfGuests = booking.NumberOfGuests
-            };
+        //    FoodBooking newBooking = new FoodBooking
+        //    {
+        //        ClientReferenceId = booking.ClientReferenceId,
+        //        BookingId = booking.BookingId,
+        //        MenuId = booking.MenuId,
+        //        NumberOfGuests = booking.NumberOfGuests
+        //    };
 
-            try
-            {
-                _context.FoodBooking.Add(newBooking);
-                await _context.SaveChangesAsync();
-            }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+        //    try
+        //    {
+        //        _context.FoodBooking.Add(newBooking);
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError);
+        //    }
 
-            return CreatedAtAction("GetBooking", new { id = newBooking.BookingId }, newBooking);
-        }
+        //    return CreatedAtAction("GetBooking", new { id = newBooking.BookingId }, newBooking);
+        //}
 
 
 

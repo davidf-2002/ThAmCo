@@ -10,7 +10,7 @@ using ThAmCo.Catering.Data;
 namespace ThAmCo.Catering.Data.Migrations
 {
     [DbContext(typeof(CateringDbContext))]
-    [Migration("20231209134752_InitialCreate")]
+    [Migration("20231212204654_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
