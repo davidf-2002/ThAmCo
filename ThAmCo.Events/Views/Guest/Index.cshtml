@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayName("First name")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayName("Last name")
             </th>
             <th></th>
         </tr>
@@ -31,7 +31,9 @@
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.GuestId">Edit</a>
+                <a asp-action="Edit" asp-route-id="@item.GuestId">Edit</a> |
+                <a asp-controller="EventGuest" asp-action="Index" 
+                   asp-route-id="@item.GuestId">Event List</a>
             </td>
         </tr>
 }

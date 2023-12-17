@@ -18,6 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Guest)
             </th>
+            <th>
+                Has Attended
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -31,7 +34,13 @@
                 @Html.DisplayFor(modelItem => item.Guest.FirstName)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.HasAttended)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { eventId=item.EventId, guestId=item.GuestId })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { eventId=item.EventId, guestId=item.GuestId })
             </td>
         </tr>
 }

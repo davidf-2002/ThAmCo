@@ -6,10 +6,12 @@
         {
         }
 
-        public EventGuest(int eventId, int guestId)
+        public EventGuest(int eventId, int guestId, bool hasAttended)
         {
             EventId = eventId;
             GuestId =  guestId;
+            HasAttended = hasAttended;
+
         }
 
         public int EventId { get; set; }
@@ -17,6 +19,7 @@
 
         public int GuestId { get; set; }
         public Guest Guest { get; set; }
+        public bool HasAttended { get; set; }
 
     }
 }

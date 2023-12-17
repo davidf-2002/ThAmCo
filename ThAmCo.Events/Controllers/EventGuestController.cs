@@ -18,7 +18,7 @@ namespace ThAmCo.Events.Controllers
             _context = context;
         }
 
-        // GET: EventGuest/1
+        // GET: GuestBooking/1
         public async Task<IActionResult> Index(int? id = null)
         {
             var eventsContext = _context.EventGuest.AsQueryable();      // turns DBset into searchable list type
@@ -35,7 +35,7 @@ namespace ThAmCo.Events.Controllers
             return View(await eventsContext.ToListAsync());
         }
 
-        // GET: EventGuest/Create
+        // GET: GuestBooking/Create
         public IActionResult Create()
         {
             ViewData["EventId"] = new SelectList(_context.Events, "EventId", "Name");       // Creates a Select list to view events and guests
@@ -43,7 +43,7 @@ namespace ThAmCo.Events.Controllers
             return View();
         }
 
-        // POST: EventGuest/Create
+        // POST: GuestBooking/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EventId,GuestId")] EventGuest eventGuest)        // [Bind] attribute is used to include only specific properties during model binding
@@ -59,6 +59,116 @@ namespace ThAmCo.Events.Controllers
             return View(eventGuest);
         }
 
+        // GET: GuestBooking/Delete?eventId=2&guestId=1
+        public async Task<IActionResult> Delete(int? eventId, int? guestId)
+        {
+            if (eventId == null || guestId == null || _context.EventGuest == null)
+            {
+                return NotFound();
+            }
+
+            var eventGuest = await _context.EventGuest
+                .Include(e => e.Guest)
+                .Include(e => e.Event)
+                .FirstOrDefaultAsync(m => m.EventId == eventId && m.GuestId == guestId);
+            if (eventGuest == null)
+            {
+                return NotFound();
+            }
+
+            return View(eventGuest);
+        }
+
+        // POST: EventStaff/Delete?eventId=2&guestId=1
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? eventId, int? guestId)
+        {
+            if (_context.EventGuest == null)
+            {
+                return Problem("Entity set 'EventsContext.EventGuest'  is null.");
+            }
+            var eventGuest = await _context.EventGuest.FindAsync(eventId, guestId);
+            if (eventGuest != null)
+            {
+                _context.EventGuest.Remove(eventGuest);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET: EventGuest/Edit?eventId=1&guestId=1
+        public async Task<IActionResult> Edit(int? eventId, int? guestId)
+        {
+            if (eventId == null || guestId == null || _context.EventGuest == null)
+            {
+                return NotFound();
+            }
+
+            var eventGuest = await _context.EventGuest
+                .Include(e => e.Guest)
+                .Include(e => e.Event)
+                .FirstOrDefaultAsync(m => m.EventId == eventId && m.GuestId == guestId);
+
+            if (eventGuest == null)
+            {
+                return NotFound();
+            }
+
+            return View(eventGuest);
+        }
+
+        // POST: EventGuest/Edit?eventId=1&guestId=1
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int eventId, int guestId, [Bind("EventId,GuestId,HasAttended")] EventGuest eventGuest)
+        {
+            if (eventId != eventGuest.EventId || guestId != eventGuest.GuestId)
+            {
+                return NotFound();
+            }
+
+            var existingEventGuest = await _context.EventGuest      // Retrieve the existing EventGuest entity from the database
+                .Include(e => e.Guest)
+                .Include(e => e.Event)
+                .FirstOrDefaultAsync(m => m.EventId == eventId && m.GuestId == guestId);
+
+            if (existingEventGuest == null)
+            {
+                return NotFound();
+            }
+
+            existingEventGuest.HasAttended = eventGuest.HasAttended;        // Update only the HasAttended property
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(existingEventGuest);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EventGuestExists(existingEventGuest.EventId, existingEventGuest.GuestId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(existingEventGuest);
+        }
+
+        private bool EventGuestExists(int eventId, int guestId)
+        {
+            return _context.EventGuest.Any(e => e.EventId == eventId && e.GuestId == guestId);
+        }
 
     }
 }

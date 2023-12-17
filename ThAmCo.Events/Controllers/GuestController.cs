@@ -21,7 +21,8 @@ namespace ThAmCo.Events.Controllers
         // GET: Guest
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Guest.ToListAsync());
+            var guestswithEvents = await _context.Guest.Include(g => g.Events).ToListAsync();      // display a list of guests with context on events
+            return View(guestswithEvents);
         }
 
         // GET: Guest/Create

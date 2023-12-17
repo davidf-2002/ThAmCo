@@ -2,19 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThAmCo.Events.Data;
 
 #nullable disable
 
-namespace ThAmCo.Events.Data.Migrations
+namespace ThAmCo.Events.data.migration
 {
     [DbContext(typeof(EventsContext))]
-    [Migration("20231213004905_InitialCreate")]
-    partial class InitialCreate
+    partial class EventsContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.23");
@@ -32,6 +30,7 @@ namespace ThAmCo.Events.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EventTypeId")
+                        .HasMaxLength(3)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("MenuId")
@@ -52,29 +51,42 @@ namespace ThAmCo.Events.Data.Migrations
                         new
                         {
                             EventId = 1,
-                            BookingId = 47531,
+                            BookingId = 3461,
                             DateAndTime = new DateTime(2023, 1, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            MenuId = 0,
+                            EventTypeId = "CON",
+                            MenuId = 1,
                             Name = "Event 1",
-                            Reference = 59310
+                            Reference = 6384
                         },
                         new
                         {
                             EventId = 2,
-                            BookingId = 35105,
+                            BookingId = 9379,
                             DateAndTime = new DateTime(2023, 1, 11, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            MenuId = 0,
+                            EventTypeId = "WED",
+                            MenuId = 2,
                             Name = "Event 2",
-                            Reference = 93821
+                            Reference = 1573
                         },
                         new
                         {
                             EventId = 3,
-                            BookingId = 62318,
+                            BookingId = 2805,
                             DateAndTime = new DateTime(2023, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
-                            MenuId = 0,
+                            EventTypeId = "PTY",
+                            MenuId = 3,
                             Name = "Event 3",
-                            Reference = 21523
+                            Reference = 6103
+                        },
+                        new
+                        {
+                            EventId = 4,
+                            BookingId = 2613,
+                            DateAndTime = new DateTime(2023, 3, 2, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventTypeId = "PTY",
+                            MenuId = 4,
+                            Name = "Event 4",
+                            Reference = 8653
                         });
                 });
 
@@ -84,6 +96,9 @@ namespace ThAmCo.Events.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("GuestId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasAttended")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("EventId", "GuestId");
@@ -96,32 +111,38 @@ namespace ThAmCo.Events.Data.Migrations
                         new
                         {
                             EventId = 1,
-                            GuestId = 1
+                            GuestId = 1,
+                            HasAttended = true
                         },
                         new
                         {
                             EventId = 1,
-                            GuestId = 2
+                            GuestId = 2,
+                            HasAttended = false
                         },
                         new
                         {
                             EventId = 2,
-                            GuestId = 3
+                            GuestId = 3,
+                            HasAttended = true
                         },
                         new
                         {
                             EventId = 2,
-                            GuestId = 4
+                            GuestId = 4,
+                            HasAttended = false
                         },
                         new
                         {
                             EventId = 3,
-                            GuestId = 5
+                            GuestId = 5,
+                            HasAttended = false
                         },
                         new
                         {
                             EventId = 3,
-                            GuestId = 6
+                            GuestId = 6,
+                            HasAttended = true
                         });
                 });
 

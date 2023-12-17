@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ThAmCo.Events.Data.Migrations
+namespace ThAmCo.Events.data.migration
 {
-    public partial class InitialCreate : Migration
+    public partial class initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +19,7 @@ namespace ThAmCo.Events.Data.Migrations
                     DateAndTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     MenuId = table.Column<int>(type: "INTEGER", nullable: false),
                     BookingId = table.Column<int>(type: "INTEGER", nullable: false),
-                    EventTypeId = table.Column<string>(type: "TEXT", nullable: true),
+                    EventTypeId = table.Column<string>(type: "TEXT", maxLength: 3, nullable: true),
                     Reference = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -60,7 +60,8 @@ namespace ThAmCo.Events.Data.Migrations
                 columns: table => new
                 {
                     EventId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GuestId = table.Column<int>(type: "INTEGER", nullable: false)
+                    GuestId = table.Column<int>(type: "INTEGER", nullable: false),
+                    HasAttended = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,17 +107,22 @@ namespace ThAmCo.Events.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Events",
                 columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
-                values: new object[] { 1, 47531, new DateTime(2023, 1, 10, 10, 0, 0, 0, DateTimeKind.Unspecified), null, 0, "Event 1", 59310 });
+                values: new object[] { 1, 3461, new DateTime(2023, 1, 10, 10, 0, 0, 0, DateTimeKind.Unspecified), "CON", 1, "Event 1", 6384 });
 
             migrationBuilder.InsertData(
                 table: "Events",
                 columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
-                values: new object[] { 2, 35105, new DateTime(2023, 1, 11, 10, 0, 0, 0, DateTimeKind.Unspecified), null, 0, "Event 2", 93821 });
+                values: new object[] { 2, 9379, new DateTime(2023, 1, 11, 10, 0, 0, 0, DateTimeKind.Unspecified), "WED", 2, "Event 2", 1573 });
 
             migrationBuilder.InsertData(
                 table: "Events",
                 columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
-                values: new object[] { 3, 62318, new DateTime(2023, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified), null, 0, "Event 3", 21523 });
+                values: new object[] { 3, 2805, new DateTime(2023, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified), "PTY", 3, "Event 3", 6103 });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
+                values: new object[] { 4, 2613, new DateTime(2023, 3, 2, 12, 0, 0, 0, DateTimeKind.Unspecified), "PTY", 4, "Event 4", 8653 });
 
             migrationBuilder.InsertData(
                 table: "Guest",
@@ -180,33 +186,33 @@ namespace ThAmCo.Events.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "EventGuest",
-                columns: new[] { "EventId", "GuestId" },
-                values: new object[] { 1, 1 });
+                columns: new[] { "EventId", "GuestId", "HasAttended" },
+                values: new object[] { 1, 1, true });
 
             migrationBuilder.InsertData(
                 table: "EventGuest",
-                columns: new[] { "EventId", "GuestId" },
-                values: new object[] { 1, 2 });
+                columns: new[] { "EventId", "GuestId", "HasAttended" },
+                values: new object[] { 1, 2, false });
 
             migrationBuilder.InsertData(
                 table: "EventGuest",
-                columns: new[] { "EventId", "GuestId" },
-                values: new object[] { 2, 3 });
+                columns: new[] { "EventId", "GuestId", "HasAttended" },
+                values: new object[] { 2, 3, true });
 
             migrationBuilder.InsertData(
                 table: "EventGuest",
-                columns: new[] { "EventId", "GuestId" },
-                values: new object[] { 2, 4 });
+                columns: new[] { "EventId", "GuestId", "HasAttended" },
+                values: new object[] { 2, 4, false });
 
             migrationBuilder.InsertData(
                 table: "EventGuest",
-                columns: new[] { "EventId", "GuestId" },
-                values: new object[] { 3, 5 });
+                columns: new[] { "EventId", "GuestId", "HasAttended" },
+                values: new object[] { 3, 5, false });
 
             migrationBuilder.InsertData(
                 table: "EventGuest",
-                columns: new[] { "EventId", "GuestId" },
-                values: new object[] { 3, 6 });
+                columns: new[] { "EventId", "GuestId", "HasAttended" },
+                values: new object[] { 3, 6, true });
 
             migrationBuilder.InsertData(
                 table: "EventStaff",

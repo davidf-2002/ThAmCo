@@ -8,12 +8,14 @@ namespace ThAmCo.Events.Data
         {
         }
 
-        public Event(int eventId, string name, DateTime dateAndTime, int bookingId, int reference)
+        public Event(int eventId, string name, DateTime dateAndTime, int menuId, string eventTypeId, int bookingId, int reference)
         {
             EventId = eventId;
             Name = name;
             DateAndTime = dateAndTime;
+            MenuId = menuId;
             BookingId = bookingId;
+            EventTypeId = eventTypeId;
             Reference = reference;
         }
 
@@ -26,6 +28,7 @@ namespace ThAmCo.Events.Data
         public int MenuId { get; set; } = 0;     // Catering
         public int BookingId { get; set; } = 0;
 
+        [MinLength(3), MaxLength(3)]
         public string EventTypeId { get; set; } = null;          // Venues
         public int Reference { get; set; } = 0;
 

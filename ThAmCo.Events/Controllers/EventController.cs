@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ThAmCo.Events.Data;
+using ThAmCo.Events.Dtos;
 
 namespace ThAmCo.Events.Controllers
 {
@@ -26,15 +27,19 @@ namespace ThAmCo.Events.Controllers
         }
 
         // GET: Event/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+
+            var evList = await GetEventTypes();
+            ViewData["Id"] = new SelectList(evList,
+                                         "Id", "Title");        // Prepare the select list
             return View();
         }
 
         // POST: Event/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EventId,Name,DateAndTime,BookingId,Reference")] Event @event)
+        public async Task<IActionResult> Create([Bind("EventId,Name,DateAndTime,MenuId,Id")] Event @event)
         {
             if (ModelState.IsValid)
             {
@@ -42,11 +47,12 @@ namespace ThAmCo.Events.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            var evList = await GetEventTypes();        // select list
+            ViewData["Id"] = new SelectList(evList,
+                                         "Id", "Title");
             return View(@event);
         }
-
-
-
 
         // GET: Event/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -55,6 +61,11 @@ namespace ThAmCo.Events.Controllers
             {
                 return NotFound();
             }
+
+            var catList = await GetEventTypes();        // prepare select list
+
+            ViewData["Id"] = new SelectList(catList,
+                                         "Id", "Title");
 
             var @event = await _context.Events.FindAsync(id);
             if (@event == null)
@@ -67,12 +78,17 @@ namespace ThAmCo.Events.Controllers
         // POST: Event/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EventId,Name,DateAndTime,BookingId,Reference")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("EventId,Name,Id")] Event @event)
         {
             if (id != @event.EventId)
             {
                 return NotFound();
             }
+
+            var catList = await GetEventTypes();        // select list
+
+            ViewData["Id"] = new SelectList(catList,
+                                         "Id", "Title");
 
             if (ModelState.IsValid)
             {
@@ -98,85 +114,27 @@ namespace ThAmCo.Events.Controllers
         }
 
 
+        private async Task<List<EventTypeDTO>> GetEventTypes()      // Call web service and get a list of categories
+        {
+            var eventtypes = new List<EventTypeDTO>().AsEnumerable();
 
+            HttpClient client = new HttpClient();       // Create and initial Http Client
+            client.BaseAddress = new System.Uri("https://localhost:7088/");
+            client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
 
+            HttpResponseMessage response = await client.GetAsync("api/eventtypes");     // Call web service
+            if (response.IsSuccessStatusCode)
+            {
+                eventtypes = await response.Content.ReadAsAsync<IEnumerable<EventTypeDTO>>();       // Decode response into a DTO
+            }
+            else
+            {
+                throw new ApplicationException("Something went wrong calling the API:" +
+                             response.ReasonPhrase);
+            }
+            return eventtypes.ToList();
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //// GET: Event/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null || _context.Events == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var @event = await _context.Events
-        //        .FirstOrDefaultAsync(m => m.EventId == id);
-        //    if (@event == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(@event);
-        //}
-
-        //// GET: Event/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.Events == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var @event = await _context.Events
-        //        .FirstOrDefaultAsync(m => m.EventId == id);
-        //    if (@event == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(@event);
-        //}
-
-        //// POST: Event/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.Events == null)
-        //    {
-        //        return Problem("Entity set 'EventsContext.Events'  is null.");
-        //    }
-        //    var @event = await _context.Events.FindAsync(id);
-        //    if (@event != null)
-        //    {
-        //        _context.Events.Remove(@event);
-        //    }
-            
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         private bool EventExists(int id)
         {

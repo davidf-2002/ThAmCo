@@ -1,4 +1,4 @@
-﻿@model ThAmCo.Events.Data.Guest
+﻿@model ThAmCo.Events.Data.EventGuest
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,31 +6,33 @@
 
 <h1>Edit</h1>
 
-<h4>Guest</h4>
+<h4>EventGuest</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EventId" />
             <input type="hidden" asp-for="GuestId" />
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label">First name</label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <label asp-for="Event.Name">Event Name:</label>
+                <input type="text" asp-for="Event.Name" class="form-control" readonly />
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Guest.FirstName">Guest Name:</label>
+                <input type="text" asp-for="Guest.FirstName" class="form-control" readonly />
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label">Last name</label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                @Html.CheckBoxFor(model => model.HasAttended)
+                <label asp-for="HasAttended" class="control-label">Has Attended</label>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
