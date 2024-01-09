@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Reserve Venue";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@using (Html.BeginForm("Reserve", "YourController", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="venueDropDown">Select Venue:</label>
+        @Html.DropDownList("SelectedVenueId", ViewData["Id"] as SelectList, "Select Venue", new { @class = "form-control", id = "venueDropDown" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+}
+

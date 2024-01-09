@@ -36,23 +36,23 @@ namespace ThAmCo.Venues.Controllers
         public async Task<IActionResult>
         CreateReservation([FromBody] ReservationPostDto reservation)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)        // Validation of the incoming model
             {
                 return BadRequest(ModelState);
             }
 
-            var availability = await _context.Availabilities
+            var availability = await _context.Availabilities        // Check venue availability for the requested date
                                              .Include(a => a.Reservation)
                                              .FirstOrDefaultAsync(
                                                 a => a.Date == reservation.EventDate
                                                      && a.VenueCode == reservation.VenueCode);
 
-            if (availability == null || availability.Reservation != null)
+            if (availability == null || availability.Reservation != null)  
             {
                 return BadRequest("Venue is not available on the requested date.");
             }
 
-            availability.Reservation = new Reservation
+            availability.Reservation = new Reservation      // Create a new reservation and associate it with the availability
             {
                 Reference = $"{availability.VenueCode}{availability.Date:yyyyMMdd}",
                 EventDate = availability.Date,
@@ -62,7 +62,7 @@ namespace ThAmCo.Venues.Controllers
             };
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReservation",
+            return CreatedAtAction("GetReservation",        // Return a 201 (Created) status with the reservation details
                                    new { reference = availability.Reservation.Reference },
                                    ReservationGetDto.FromModel(availability.Reservation));
         }

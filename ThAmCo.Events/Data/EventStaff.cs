@@ -2,6 +2,10 @@
 {
     public class EventStaff
     {
+        public EventStaff()
+        {
+        }
+
         public EventStaff(int eventId, int staffId)
         {
             EventId = eventId;

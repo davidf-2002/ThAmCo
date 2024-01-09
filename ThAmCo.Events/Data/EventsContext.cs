@@ -60,10 +60,10 @@ namespace ThAmCo.Events.Data
 
 
             modelBuilder.Entity<Event>().HasData(
-                new Event(1, "Event 1", new DateTime(2023, 01, 10, 10, 0, 0), 1, "CON", 3461, 6384),
-                new Event(2, "Event 2", new DateTime(2023, 01, 11, 10, 0, 0), 2, "WED", 9379, 1573),
-                new Event(3, "Event 3", new DateTime(2023, 09, 01, 12, 0, 0), 3, "PTY", 2805, 6103),
-                new Event(4, "Event 4", new DateTime(2023, 03, 02, 12, 0, 0), 4, "PTY", 2613, 8653)
+                new Event(1, "Event 1", new DateTime(2023, 01, 10, 10, 0, 0), 1, "CON", 3461, "FSHSSS"),
+                new Event(2, "Event 2", new DateTime(2023, 01, 11, 10, 0, 0), 2, "WED", 9379, "FADHAD"),
+                new Event(3, "Event 3", new DateTime(2023, 09, 01, 12, 0, 0), 3, "PTY", 2805, "SDGDGS"),
+                new Event(4, "Event 4", new DateTime(2023, 03, 02, 12, 0, 0), 4, "PTY", 2613, "DFSHAD")
                 );
 
             modelBuilder.Entity<Staff>().HasData(

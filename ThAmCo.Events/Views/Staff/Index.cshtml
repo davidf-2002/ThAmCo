@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ThAmCo.Events.Data.Guest>
+﻿@model IEnumerable<ThAmCo.Events.Data.Staff>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Guest List</h1>
+<h1>Staff List</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -31,9 +31,10 @@
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.GuestId">Edit</a> |
-                <a asp-controller="EventGuest" asp-action="GuestIndex" 
-                   asp-route-id="@item.GuestId">Event List</a>
+                <a asp-action="Edit" asp-route-id="@item.StaffId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.StaffId">Details</a> |
+                <a asp-controller="EventGuest" asp-action="StaffIndex" 
+                   asp-route-id="@item.StaffId">Event List</a>
             </td>
         </tr>
 }

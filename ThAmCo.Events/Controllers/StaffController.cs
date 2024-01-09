@@ -9,73 +9,83 @@ using ThAmCo.Events.Data;
 
 namespace ThAmCo.Events.Controllers
 {
-    public class GuestController : Controller
+    public class StaffController : Controller
     {
         private readonly EventsContext _context;
 
-        public GuestController(EventsContext context)
+        public StaffController(EventsContext context)
         {
             _context = context;
         }
 
-        // GET: Guest
+        // GET: Staff
         public async Task<IActionResult> Index()
         {
-            var guestswithEvents = await _context.Guest.Include(g => g.Events).ToListAsync();      // display a list of guests with context on events
-            return View(guestswithEvents);
+            var staffwithevent = await _context.Staff.Include(s => s.Events).ToListAsync();      // display a list of guests with context on events
+            return View(staffwithevent);
         }
 
+        // GET: Staff/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var @staff = await _context.Staff
+                .Include(s => s.Events)
+                .FirstOrDefaultAsync(s => s.StaffId == id);
 
+            if (@staff == null)
+            {
+                return NotFound();
+            }
+            return View(@staff);
+        }
 
-
-
-
-
-
-
-        // GET: Guest/Create
+        // GET: Staff/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Guest/Create
+        // POST: Staff/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GuestId,LastName,FirstName")] Guest guest)
+        public async Task<IActionResult> Create([Bind("StaffId,LastName,FirstName")] Staff staff)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(guest);
+                _context.Add(staff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(guest);
+            return View(staff);
         }
 
-        // GET: Guest/Edit/5
+        // GET: Staff/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Guest == null)
+            if (id == null || _context.Staff == null)
             {
                 return NotFound();
             }
 
-            var guest = await _context.Guest.FindAsync(id);
-            if (guest == null)
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff == null)
             {
                 return NotFound();
             }
-            return View(guest);
+            return View(staff);
         }
 
-        // POST: Guest/Edit/5
+        // POST: Staff/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GuestId,LastName,FirstName")] Guest guest)
+        public async Task<IActionResult> Edit(int id, [Bind("StaffId,LastName,FirstName")] Staff staff)
         {
-            if (id != guest.GuestId)
+            if (id != staff.StaffId)
             {
                 return NotFound();
             }
@@ -84,12 +94,12 @@ namespace ThAmCo.Events.Controllers
             {
                 try
                 {
-                    _context.Update(guest);
+                    _context.Update(staff);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GuestExists(guest.GuestId))
+                    if (!StaffExists(staff.StaffId))
                     {
                         return NotFound();
                     }
@@ -100,12 +110,12 @@ namespace ThAmCo.Events.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(guest);
+            return View(staff);
         }
 
-        private bool GuestExists(int id)
+        private bool StaffExists(int id)
         {
-            return _context.Guest.Any(e => e.GuestId == id);
+          return _context.Staff.Any(e => e.StaffId == id);
         }
     }
 }

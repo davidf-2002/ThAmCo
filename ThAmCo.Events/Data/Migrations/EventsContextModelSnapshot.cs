@@ -7,7 +7,7 @@ using ThAmCo.Events.Data;
 
 #nullable disable
 
-namespace ThAmCo.Events.data.migration
+namespace ThAmCo.Events.Data.Migrations
 {
     [DbContext(typeof(EventsContext))]
     partial class EventsContextModelSnapshot : ModelSnapshot
@@ -33,6 +33,9 @@ namespace ThAmCo.Events.data.migration
                         .HasMaxLength(3)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsFirstAider")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("MenuId")
                         .HasColumnType("INTEGER");
 
@@ -40,8 +43,8 @@ namespace ThAmCo.Events.data.migration
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Reference")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Reference")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("EventId");
 
@@ -54,9 +57,10 @@ namespace ThAmCo.Events.data.migration
                             BookingId = 3461,
                             DateAndTime = new DateTime(2023, 1, 10, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTypeId = "CON",
+                            IsFirstAider = false,
                             MenuId = 1,
                             Name = "Event 1",
-                            Reference = 6384
+                            Reference = "FSHSSS"
                         },
                         new
                         {
@@ -64,9 +68,10 @@ namespace ThAmCo.Events.data.migration
                             BookingId = 9379,
                             DateAndTime = new DateTime(2023, 1, 11, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTypeId = "WED",
+                            IsFirstAider = false,
                             MenuId = 2,
                             Name = "Event 2",
-                            Reference = 1573
+                            Reference = "FADHAD"
                         },
                         new
                         {
@@ -74,9 +79,10 @@ namespace ThAmCo.Events.data.migration
                             BookingId = 2805,
                             DateAndTime = new DateTime(2023, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTypeId = "PTY",
+                            IsFirstAider = false,
                             MenuId = 3,
                             Name = "Event 3",
-                            Reference = 6103
+                            Reference = "SDGDGS"
                         },
                         new
                         {
@@ -84,9 +90,10 @@ namespace ThAmCo.Events.data.migration
                             BookingId = 2613,
                             DateAndTime = new DateTime(2023, 3, 2, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTypeId = "PTY",
+                            IsFirstAider = false,
                             MenuId = 4,
                             Name = "Event 4",
-                            Reference = 8653
+                            Reference = "DFSHAD"
                         });
                 });
 

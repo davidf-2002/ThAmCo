@@ -18,24 +18,23 @@ namespace ThAmCo.Events.Controllers
             _context = context;
         }
 
-        // GET: GuestBooking/1
+        // GET: EventGuest/Index/1
         public async Task<IActionResult> Index(int? id = null)
         {
             var eventsContext = _context.EventGuest.AsQueryable();      // turns DBset into searchable list type
 
             if (id != null)
             {
-                eventsContext = eventsContext.Where(ei => ei.EventId == id);
+                eventsContext = eventsContext.Where( g => g.EventId == id);
             }
 
-            eventsContext = eventsContext
-                .Include(e => e.Guest)
+            eventsContext = eventsContext.Include(g => g.Guest)
                 .Include(e => e.Event);
 
             return View(await eventsContext.ToListAsync());
         }
 
-        // GET: GuestBooking/Create
+        // GET: EventGuest/Create
         public IActionResult Create()
         {
             ViewData["EventId"] = new SelectList(_context.Events, "EventId", "Name");       // Creates a Select list to view events and guests
@@ -43,7 +42,7 @@ namespace ThAmCo.Events.Controllers
             return View();
         }
 
-        // POST: GuestBooking/Create
+        // POST: EventGuest/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EventId,GuestId")] EventGuest eventGuest)        // [Bind] attribute is used to include only specific properties during model binding
@@ -59,7 +58,7 @@ namespace ThAmCo.Events.Controllers
             return View(eventGuest);
         }
 
-        // GET: GuestBooking/Delete?eventId=2&guestId=1
+        // GET: EventGuest/Delete?eventId=2&guestId=1
         public async Task<IActionResult> Delete(int? eventId, int? guestId)
         {
             if (eventId == null || guestId == null || _context.EventGuest == null)
@@ -79,7 +78,7 @@ namespace ThAmCo.Events.Controllers
             return View(eventGuest);
         }
 
-        // POST: EventStaff/Delete?eventId=2&guestId=1
+        // POST: EventGuest/Delete?eventId=2&guestId=1
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? eventId, int? guestId)

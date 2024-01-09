@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ThAmCo.Events.data.migration
+namespace ThAmCo.Events.Data.Migrations
 {
-    public partial class initialcreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,7 +20,8 @@ namespace ThAmCo.Events.data.migration
                     MenuId = table.Column<int>(type: "INTEGER", nullable: false),
                     BookingId = table.Column<int>(type: "INTEGER", nullable: false),
                     EventTypeId = table.Column<string>(type: "TEXT", maxLength: 3, nullable: true),
-                    Reference = table.Column<int>(type: "INTEGER", nullable: false)
+                    Reference = table.Column<string>(type: "TEXT", nullable: true),
+                    IsFirstAider = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,23 +107,23 @@ namespace ThAmCo.Events.data.migration
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
-                values: new object[] { 1, 3461, new DateTime(2023, 1, 10, 10, 0, 0, 0, DateTimeKind.Unspecified), "CON", 1, "Event 1", 6384 });
+                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "IsFirstAider", "MenuId", "Name", "Reference" },
+                values: new object[] { 1, 3461, new DateTime(2023, 1, 10, 10, 0, 0, 0, DateTimeKind.Unspecified), "CON", false, 1, "Event 1", "FSHSSS" });
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
-                values: new object[] { 2, 9379, new DateTime(2023, 1, 11, 10, 0, 0, 0, DateTimeKind.Unspecified), "WED", 2, "Event 2", 1573 });
+                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "IsFirstAider", "MenuId", "Name", "Reference" },
+                values: new object[] { 2, 9379, new DateTime(2023, 1, 11, 10, 0, 0, 0, DateTimeKind.Unspecified), "WED", false, 2, "Event 2", "FADHAD" });
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
-                values: new object[] { 3, 2805, new DateTime(2023, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified), "PTY", 3, "Event 3", 6103 });
+                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "IsFirstAider", "MenuId", "Name", "Reference" },
+                values: new object[] { 3, 2805, new DateTime(2023, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified), "PTY", false, 3, "Event 3", "SDGDGS" });
 
             migrationBuilder.InsertData(
                 table: "Events",
-                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "MenuId", "Name", "Reference" },
-                values: new object[] { 4, 2613, new DateTime(2023, 3, 2, 12, 0, 0, 0, DateTimeKind.Unspecified), "PTY", 4, "Event 4", 8653 });
+                columns: new[] { "EventId", "BookingId", "DateAndTime", "EventTypeId", "IsFirstAider", "MenuId", "Name", "Reference" },
+                values: new object[] { 4, 2613, new DateTime(2023, 3, 2, 12, 0, 0, 0, DateTimeKind.Unspecified), "PTY", false, 4, "Event 4", "DFSHAD" });
 
             migrationBuilder.InsertData(
                 table: "Guest",

@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ThAmCo.Events.Data.Event>
+﻿@model IEnumerable<ThAmCo.Events.Models.EventVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Event List";
 }
 
-<h1>Index</h1>
+<h1>Event List</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -48,8 +48,17 @@
             <td>
                 @item.TotalGuestsCount
             </td>
+            =<td>
+                    @if (!item.isFirstAider)
+                    {
+                        <div style="color: red;">
+                            Warning, no first aider
+                        </div>
+                    }
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
                 <a asp-controller="EventGuest" asp-action="Index" 
                    asp-route-id="@item.EventId">Guest List</a>
 

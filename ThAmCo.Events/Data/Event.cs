@@ -8,7 +8,7 @@ namespace ThAmCo.Events.Data
         {
         }
 
-        public Event(int eventId, string name, DateTime dateAndTime, int menuId, string eventTypeId, int bookingId, int reference)
+        public Event(int eventId, string name, DateTime dateAndTime, int menuId, string eventTypeId, int bookingId, string reference)
         {
             EventId = eventId;
             Name = name;
@@ -24,20 +24,20 @@ namespace ThAmCo.Events.Data
         [Required]
         public string Name { get; set; }
         public DateTime DateAndTime { get; set; }
+        //public bool isDeleted { get; set; }
 
         public int MenuId { get; set; } = 0;     // Catering
         public int BookingId { get; set; } = 0;
 
         [MinLength(3), MaxLength(3)]
         public string EventTypeId { get; set; } = null;          // Venues
-        public int Reference { get; set; } = 0;
-
+        public string Reference { get; set; } = null;
         public List<EventStaff> Staffs { get; set; }
         public List<EventGuest> Guests { get; set; }
 
-        // Calculated property for total guests count
-        [Display(Name = "Total Guests")]
+        [Display(Name = "Total Guests")]        // Calculated property for total guests count
         public int TotalGuestsCount => Guests?.Count ?? 0;
+        public bool IsFirstAider { get; set; }
 
     }
 
